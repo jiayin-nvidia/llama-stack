@@ -17,11 +17,13 @@ from openai.types.completion_choice import Logprobs as OpenAICompletionLogprobs
 
 from llama_stack.apis.inference import (
     ChatCompletionRequest,
+    CompletionMessage,
     CompletionRequest,
     CompletionResponse,
     CompletionResponseStreamChunk,
     GreedySamplingStrategy,
     JsonSchemaResponseFormat,
+    Message,
     TokenLogProbs,
     TopKSamplingStrategy,
     TopPSamplingStrategy,
@@ -31,6 +33,37 @@ from llama_stack.providers.utils.inference.openai_compat import (
     convert_message_to_openai_dict_new,
     convert_tooldef_to_openai_tool,
 )
+
+
+async def convert_message_to_openai_dict_nvidia(message: Message) -> dict:
+    """
+    Message conversion that handles empty content properly.
+    When an assistant message has empty content and tool calls, sets content to None
+    """
+    # Use the standard conversion first
+    openai_message = await convert_message_to_openai_dict_new(message)
+
+    # Handle the result based on its actual type
+    if isinstance(openai_message, dict):
+        message_dict = openai_message.copy()
+    elif hasattr(openai_message, "model_dump"):
+        message_dict = openai_message.model_dump(exclude_unset=True)
+    else:
+        # Should not happen, but handle gracefully
+        message_dict = {"role": getattr(message, "role", "assistant"), "content": ""}
+
+    # Handle empty content for assistant messages with tool calls
+    # Otherwise, will get the error: 'String should have at least 1 character' when message content is an empty string
+    if (
+        isinstance(message, CompletionMessage)
+        and message_dict.get("role") == "assistant"
+        and message_dict.get("content") == ""
+        and message_dict.get("tool_calls")
+    ):
+        # Set content to None when it's empty and there are tool calls
+        message_dict["content"] = None
+
+    return message_dict
 
 
 async def convert_chat_completion_request(
@@ -67,7 +100,7 @@ async def convert_chat_completion_request(
     nvext = {}
     payload: dict[str, Any] = dict(
         model=request.model,
-        messages=[await convert_message_to_openai_dict_new(message) for message in request.messages],
+        messages=[await convert_message_to_openai_dict_nvidia(message) for message in request.messages],
         stream=request.stream,
         n=n,
         extra_body=dict(nvext=nvext),
