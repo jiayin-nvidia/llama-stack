@@ -12,6 +12,12 @@ from pydantic import BaseModel, Field, SecretStr
 from llama_stack.schema_utils import json_schema_type
 
 
+def get_api_key_from_env() -> SecretStr | None:
+    """Get API key from environment variable."""
+    api_key = os.getenv("NVIDIA_API_KEY")
+    return SecretStr(api_key) if api_key else None
+
+
 @json_schema_type
 class NVIDIAConfig(BaseModel):
     """
@@ -40,7 +46,7 @@ class NVIDIAConfig(BaseModel):
         description="A base url for accessing the NVIDIA NIM",
     )
     api_key: SecretStr | None = Field(
-        default_factory=lambda: SecretStr(os.getenv("NVIDIA_API_KEY")),
+        default_factory=get_api_key_from_env,
         description="The NVIDIA API key, only needed of using the hosted service",
     )
     timeout: int = Field(

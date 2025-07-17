@@ -173,10 +173,11 @@ def available_providers() -> list[ProviderSpec]:
             adapter=AdapterSpec(
                 adapter_type="nvidia",
                 pip_packages=[
-                    "openai",
+                    "litellm",
                 ],
                 module="llama_stack.providers.remote.inference.nvidia",
                 config_class="llama_stack.providers.remote.inference.nvidia.NVIDIAConfig",
+                provider_data_validator="llama_stack.providers.remote.inference.nvidia.NVIDIAProviderDataValidator",
                 description="NVIDIA inference provider for accessing NVIDIA NIM models and AI services.",
             ),
         ),
