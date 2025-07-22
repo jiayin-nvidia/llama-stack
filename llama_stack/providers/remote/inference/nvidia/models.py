@@ -13,7 +13,7 @@ from llama_stack.providers.utils.inference.model_registry import (
 
 SAFETY_MODELS_ENTRIES = []
 
-# https://docs.nvidia.com/nim/large-language-models/latest/supported-llm-agnostic-architectures.html
+# https://docs.nvidia.com/nim/large-language-models/latest/supported-architectures.html
 MODEL_ENTRIES = [
     build_hf_repo_model_entry(
         "meta/llama3-8b-instruct",
@@ -63,11 +63,47 @@ MODEL_ENTRIES = [
     # | Model ID                          | Max    | Publisher | Embedding | Dynamic    |
     # |                                   | Tokens |           | Dimension | Embeddings |
     # +-----------------------------------+--------+-----------+-----------+------------+
-    # | nvidia/llama-3.2-nv-embedqa-1b-v2 | 8192   | NVIDIA    | 2048      | Yes        |
-    # | nvidia/nv-embedqa-e5-v5           |  512   | NVIDIA    | 1024      |  No        |
-    # | nvidia/nv-embedqa-mistral-7b-v2   |  512   | NVIDIA    | 4096      |  No        |
-    # | snowflake/arctic-embed-l          |  512   | Snowflake | 1024      |  No        |
+    # | nvidia/llama-3.2-nemoretriever-300m-embed-v1 | 8192 | NVIDIA | 2048 | Yes |
+    # | nvidia/llama-3.2-nemoretriever-1b-vlm-embed-v1 | 4096 | NVIDIA | 2048 | Yes |
+    # | baai/bge-large-zh-v1.5            |  512   | BAAI      | 1024     |  No        |
+    # | baai/bge-m3                       | 8192   | BAAI      | 1024     |  No        |
+    # | nvidia/llama-3.2-nv-embedqa-1b-v2 | 8192   | NVIDIA    | 2048     | Yes        |
+    # | nvidia/nv-embedqa-e5-v5           |  512   | NVIDIA    | 1024     |  No        |
+    # | nvidia/nv-embedqa-mistral-7b-v2   |  512   | NVIDIA    | 4096     |  No        |
+    # | snowflake/arctic-embed-l          |  512   | Snowflake | 1024     |  No        |
     # +-----------------------------------+--------+-----------+-----------+------------+
+    ProviderModelEntry(
+        provider_model_id="nvidia/llama-3.2-nemoretriever-300m-embed-v1",
+        model_type=ModelType.embedding,
+        metadata={
+            "embedding_dimension": 2048,
+            "context_length": 8192,
+        },
+    ),
+    ProviderModelEntry(
+        provider_model_id="nvidia/llama-3.2-nemoretriever-1b-vlm-embed-v1",
+        model_type=ModelType.embedding,
+        metadata={
+            "embedding_dimension": 2048,
+            "context_length": 4096,
+        },
+    ),
+    ProviderModelEntry(
+        provider_model_id="baai/bge-large-zh-v1.5",
+        model_type=ModelType.embedding,
+        metadata={
+            "embedding_dimension": 1024,
+            "context_length": 512,
+        },
+    ),
+    ProviderModelEntry(
+        provider_model_id="baai/bge-m3",
+        model_type=ModelType.embedding,
+        metadata={
+            "embedding_dimension": 1024,
+            "context_length": 8192,
+        },
+    ),
     ProviderModelEntry(
         provider_model_id="nvidia/llama-3.2-nv-embedqa-1b-v2",
         model_type=ModelType.embedding,

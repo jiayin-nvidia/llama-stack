@@ -189,6 +189,34 @@ models:
 - metadata:
     embedding_dimension: 2048
     context_length: 8192
+  model_id: nvidia/llama-3.2-nemoretriever-300m-embed-v1
+  provider_id: nvidia
+  provider_model_id: nvidia/llama-3.2-nemoretriever-300m-embed-v1
+  model_type: embedding
+- metadata:
+    embedding_dimension: 2048
+    context_length: 4096
+  model_id: nvidia/llama-3.2-nemoretriever-1b-vlm-embed-v1
+  provider_id: nvidia
+  provider_model_id: nvidia/llama-3.2-nemoretriever-1b-vlm-embed-v1
+  model_type: embedding
+- metadata:
+    embedding_dimension: 1024
+    context_length: 512
+  model_id: baai/bge-large-zh-v1.5
+  provider_id: nvidia
+  provider_model_id: baai/bge-large-zh-v1.5
+  model_type: embedding
+- metadata:
+    embedding_dimension: 1024
+    context_length: 8192
+  model_id: baai/bge-m3
+  provider_id: nvidia
+  provider_model_id: baai/bge-m3
+  model_type: embedding
+- metadata:
+    embedding_dimension: 2048
+    context_length: 8192
   model_id: nvidia/llama-3.2-nv-embedqa-1b-v2
   provider_id: nvidia
   provider_model_id: nvidia/llama-3.2-nv-embedqa-1b-v2
