@@ -41,10 +41,10 @@ client.initialize()
 
 ### Create Completion
 
-> Note on Completion API
->
-> The hosted NVIDIA Llama NIMs (e.g., `meta-llama/Llama-3.1-8B-Instruct`) with ```NVIDIA_BASE_URL="https://integrate.api.nvidia.com"``` does not support the ```completion``` method, while the locally deployed NIM does.
+The following example shows how to create a completion for an NVIDIA NIM.
 
+> [!NOTE]
+> The hosted NVIDIA Llama NIMs (for example ```meta-llama/Llama-3.1-8B-Instruct```) that have ```NVIDIA_BASE_URL="https://integrate.api.nvidia.com"``` do not support the ```completion``` method, while locally deployed NIMs do.
 
 ```python
 response = client.inference.completion(
@@ -59,6 +59,8 @@ print(f"Response: {response.content}")
 ```
 
 ### Create Chat Completion
+
+The following example shows how to create a chat completion for an NVIDIA NIM.
 
 ```python
 response = client.inference.chat_completion(
@@ -82,6 +84,9 @@ print(f"Response: {response.completion_message.content}")
 ```
 
 ### Tool Calling Example ###
+
+The following example shows how to do tool calling for an NVIDIA NIM.
+
 ```python
 from llama_stack.models.llama.datatypes import ToolDefinition, ToolParamDefinition
 
@@ -117,6 +122,9 @@ if tool_response.completion_message.tool_calls:
 ```
 
 ### Structured Output Example
+
+The following example shows how to do structured output for an NVIDIA NIM.
+
 ```python
 from llama_stack.apis.inference import JsonSchemaResponseFormat, ResponseFormatType
 
@@ -149,8 +157,10 @@ print(f"Structured Response: {structured_response.completion_message.content}")
 ```
 
 ### Create Embeddings
-> Note on OpenAI embeddings compatibility
->
+
+The following example shows how to create embeddings for an NVIDIA NIM.
+
+> [!NOTE]
 > NVIDIA asymmetric embedding models (e.g., `nvidia/llama-3.2-nv-embedqa-1b-v2`) require an `input_type` parameter not present in the standard OpenAI embeddings API. The NVIDIA Inference Adapter automatically sets `input_type="query"` when using the OpenAI-compatible embeddings endpoint for NVIDIA. For passage embeddings, use the `embeddings` API with `task_type="document"`.
 
 ```python
